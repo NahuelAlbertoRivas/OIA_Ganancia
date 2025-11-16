@@ -16,7 +16,7 @@ public class EvaluadorLocal {
 
 	}
 
-	public int ganancia(int Fab, int Comp, String path) throws IOException {
+	public int ganancia(String path) throws IOException {
 		procesarArchivo(path);
 
 		Fabricante fab = (Fabricante) CPfabricantes.remover(), aux;
@@ -38,9 +38,11 @@ public class EvaluadorLocal {
 
 		if (utilidad < 0) {
 			utilidad = -1;
+			System.out.println("Es recomendable resignar el negocio de esta jornada");
 		} else {
-			Fab = fab.getId();
-			Comp = comp.getId();
+			System.out.println("Seleccionando el fabricante (id) " + fab.getId() + " y el comprador (id) " 
+					+ comp.getId() + ", entonces, la ganancia será -> "
+					+ utilidad);
 		}
 
 		CPfabricantes.vaciarMonticulo();
