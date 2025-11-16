@@ -10,20 +10,42 @@ public class EvaluadorLocal {
 	private Monticulo<Comprador> CPcompradores = new Monticulo<>(); // en primer lugar siempre la mejor opción
 	private int presupuesto = 0;
 	private int utilidad = -1;
-	private int idFabSeleccionado = 0;
-	private int idCompSeleccionado = 0;
 	private int limiteUnidadesSegunPresupuesto = 0;
 
 	public EvaluadorLocal() {
 
 	}
-	
-	public int ganancia(int Fab, int Comp) throws IOException {		
-		procesarArchivo("ganancia.txt");
-		
-		Fab = idFabSeleccionado;
-		Comp = idCompSeleccionado;
-		
+
+	public int ganancia(int Fab, int Comp, String path) throws IOException {
+		procesarArchivo(path);
+
+		Fabricante fab = (Fabricante) CPfabricantes.remover(), aux;
+		Comprador comp = (Comprador) CPcompradores.verRaiz();
+		int cantNecesaria = Math.max(comp.getCantidadSolicitada(), fab.getCantidadMinima()), utilidadAux;
+
+		utilidad = comp.getCantidadSolicitada() * comp.getValorPorUnidad() - cantNecesaria * fab.getValorPorUnidad();
+
+		while (!CPfabricantes.vacio()) {
+			aux = (Fabricante) CPfabricantes.remover();
+			cantNecesaria = Math.max(comp.getCantidadSolicitada(), aux.getCantidadMinima());
+			utilidadAux = comp.getCantidadSolicitada() * comp.getValorPorUnidad()
+					- cantNecesaria * aux.getValorPorUnidad();
+			if (utilidadAux > utilidad) {
+				fab = aux;
+				utilidad = utilidadAux;
+			}
+		}
+
+		if (utilidad < 0) {
+			utilidad = -1;
+		} else {
+			Fab = fab.getId();
+			Comp = comp.getId();
+		}
+
+		CPfabricantes.vaciarMonticulo();
+		CPcompradores.vaciarMonticulo();
+
 		return utilidad;
 	}
 
@@ -31,62 +53,33 @@ public class EvaluadorLocal {
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		int precio, cant;
 
-        String[] primeraLinea = br.readLine().trim().split(" ");
-        int P = Integer.parseInt(primeraLinea[0]);
-        int F = Integer.parseInt(primeraLinea[1]);
-        int C = Integer.parseInt(primeraLinea[2]);
-        
-        presupuesto = P;
-        
-        // Leer línea de comentario
-        br.readLine();
-        
-        for (int i = 0; i < F; i++) {
-            String[] partes = br.readLine().trim().split(" ");
-            precio = Integer.parseInt(partes[0]);
-            cant = Integer.parseInt(partes[1]);
-            insertarColaPrioridadFabricantes(i + 1, precio, cant);
-        }
-        
-        br.readLine();
-        
-        for (int i = 0; i < C; i++) {
-            String[] partes = br.readLine().trim().split(" ");
-            precio = Integer.parseInt(partes[0]);
-            cant = Integer.parseInt(partes[1]);
-            insertarColaPrioridadCompradores(i + 1, precio, cant);
-        }
-        
-        br.close();
-        
-        Fabricante fab = (Fabricante) CPfabricantes.remover(), 
-        			aux;
-		Comprador comp = (Comprador) CPcompradores.verRaiz();
-		int cantNecesaria = Math.max(comp.getCantidadSolicitada(), fab.getCantidadMinima()),
-		   	utilidadAux;
-		
-		utilidad = comp.getCantidadSolicitada() * comp.getValorPorUnidad() - cantNecesaria * fab.getValorPorUnidad();
-		
-		while (!CPfabricantes.vacio()) {
-			aux = (Fabricante) CPfabricantes.remover();
-			cantNecesaria = Math.max(comp.getCantidadSolicitada(), aux.getCantidadMinima());
-			utilidadAux = comp.getCantidadSolicitada() * comp.getValorPorUnidad() - cantNecesaria * aux.getValorPorUnidad();
-			if(utilidadAux > utilidad) {
-				fab = aux;
-				utilidad = utilidadAux;
-			}
+		String[] primeraLinea = br.readLine().trim().split(" ");
+		int P = Integer.parseInt(primeraLinea[0]);
+		int F = Integer.parseInt(primeraLinea[1]);
+		int C = Integer.parseInt(primeraLinea[2]);
+
+		presupuesto = P;
+
+		// Leer línea de comentario
+		br.readLine();
+
+		for (int i = 0; i < F; i++) {
+			String[] partes = br.readLine().trim().split(" ");
+			precio = Integer.parseInt(partes[0]);
+			cant = Integer.parseInt(partes[1]);
+			insertarColaPrioridadFabricantes(i + 1, precio, cant);
 		}
-		
-		if(utilidad < 0) {
-			utilidad = -1;
+
+		br.readLine();
+
+		for (int i = 0; i < C; i++) {
+			String[] partes = br.readLine().trim().split(" ");
+			precio = Integer.parseInt(partes[0]);
+			cant = Integer.parseInt(partes[1]);
+			insertarColaPrioridadCompradores(i + 1, precio, cant);
 		}
-		else {
-			idFabSeleccionado = fab.getId();
-			idCompSeleccionado = comp.getId();
-		}
-		
-		CPfabricantes.vaciarMonticulo();
-		CPcompradores.vaciarMonticulo();
+
+		br.close();
 	}
 
 	private void insertarColaPrioridadFabricantes(int nroFabricante, int valUnidad, int cantMin) {

@@ -10,7 +10,7 @@ public class Main {
 		EvaluadorLocal el = new EvaluadorLocal();
 		int Fab = 0, Comp = 0, utilidad;
 		
-		utilidad = el.ganancia(Fab, Comp);
+		utilidad = el.ganancia(Fab, Comp, "ganancia.txt");
 		
 		if(utilidad > 0) {
 			System.out.println("Seleccionando el fabricante (id) " + Fab + " y el comprador (id) " 
