@@ -1,0 +1,5 @@
+1000 1 1  
+#Condiciones de los fabricantes# 
+2 500
+#Condiciones de los compradores# 
+150 1
