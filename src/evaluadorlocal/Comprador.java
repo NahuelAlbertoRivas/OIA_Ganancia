@@ -10,6 +10,18 @@ public class Comprador implements Comparable<Comprador> {
 		cantidadSolicitada = cantSolicitada;
 		valorPorUnidad = valUnidad;
 	}
+	
+	public void setId(int nId) {
+		id = nId;
+	}
+	
+	public void setCantidadSolicitada(int cantSolicitada) {
+		cantidadSolicitada = cantSolicitada;
+	}
+	
+	public void setValorPorUnidad(int valUnidad) {
+		valorPorUnidad = valUnidad;
+	}
 
 	public int getId() {
 		return id;

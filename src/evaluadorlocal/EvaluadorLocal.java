@@ -9,7 +9,7 @@ import monticulo.Monticulo;
 
 public class EvaluadorLocal {
 	private Monticulo<Fabricante> MontFabricantes = new Monticulo<>(); // en primer lugar siempre la mejor opción
-	private Monticulo<Comprador> MontCompradores = new Monticulo<>(); // en primer lugar siempre la mejor opción
+	private Comprador mejorOpcionComprador = new Comprador(0, 0, 0);
 	private int presupuesto = 0;
 	private int utilidad = -1;
 	private int limiteUnidadesSegunPresupuesto = 0;
@@ -19,6 +19,7 @@ public class EvaluadorLocal {
 	}
 	
 	public void evaluadorLocal() {
+		int mejorGanancia = 0;
 		Scanner sc = new Scanner(System.in);
 
         // 1. Pedir los valores iniciales
@@ -46,7 +47,12 @@ public class EvaluadorLocal {
             System.out.print("Comprador " + (i + 1) + ": "); // Prompt para cada línea
             int precio = sc.nextInt();
             int cant = sc.nextInt();
-            insertarColaPrioridadCompradores(i + 1, precio, cant);
+            if((cant * precio) > mejorGanancia) {
+            	mejorOpcionComprador.setId(i);
+            	mejorOpcionComprador.setCantidadSolicitada(cant);
+            	mejorOpcionComprador.setValorPorUnidad(precio);
+            }
+            //insertarColaPrioridadCompradores(i + 1, precio, cant);
         }
         
         sc.close();
@@ -57,15 +63,14 @@ public class EvaluadorLocal {
 		//evaluadorLocal();
 
 		Fabricante fab = (Fabricante) MontFabricantes.remover(), aux;
-		Comprador comp = (Comprador) MontCompradores.verRaiz();
-		int cantNecesaria = Math.max(comp.getCantidadSolicitada(), fab.getCantidadMinima()), utilidadAux;
+		int cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), fab.getCantidadMinima()), utilidadAux;
 
-		utilidad = comp.getCantidadSolicitada() * comp.getValorPorUnidad() - cantNecesaria * fab.getValorPorUnidad();
+		utilidad = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad() - cantNecesaria * fab.getValorPorUnidad();
 
 		while (!MontFabricantes.vacio()) {
 			aux = (Fabricante) MontFabricantes.remover();
-			cantNecesaria = Math.max(comp.getCantidadSolicitada(), aux.getCantidadMinima());
-			utilidadAux = comp.getCantidadSolicitada() * comp.getValorPorUnidad()
+			cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), aux.getCantidadMinima());
+			utilidadAux = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
 					- cantNecesaria * aux.getValorPorUnidad();
 			if (utilidadAux > utilidad) {
 				fab = aux;
@@ -78,19 +83,18 @@ public class EvaluadorLocal {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 		} else {
 			System.out.println("Seleccionando el fabricante (id) " + fab.getId() + " y el comprador (id) " 
-					+ comp.getId() + ", entonces, la ganancia será -> "
+					+ mejorOpcionComprador.getId() + ", entonces, la ganancia será -> "
 					+ utilidad);
 		}
 
 		MontFabricantes.vaciarMonticulo();
-		MontCompradores.vaciarMonticulo();
 
 		return utilidad;
 	}
 
 	public void procesarArchivo(String path) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(path));
-		int precio, cant;
+		int precio, cant, mejorGanancia = 0;
 
 		String[] primeraLinea = br.readLine().trim().split(" ");
 		int P = Integer.parseInt(primeraLinea[0]);
@@ -115,7 +119,12 @@ public class EvaluadorLocal {
 			String[] partes = br.readLine().trim().split(" ");
 			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
-			insertarColaPrioridadCompradores(i + 1, precio, cant);
+			if((cant * precio) > mejorGanancia) {
+            	mejorOpcionComprador.setId(i);
+            	mejorOpcionComprador.setCantidadSolicitada(cant);
+            	mejorOpcionComprador.setValorPorUnidad(precio);
+            }
+			//insertarColaPrioridadCompradores(i + 1, precio, cant);
 		}
 
 		br.close();
@@ -138,7 +147,8 @@ public class EvaluadorLocal {
 			// limiteUnidadesSegunPresupuesto);
 		}
 	}
-
+	
+	/*
 	private void insertarColaPrioridadCompradores(int nroComprador, int valUnidad, int cantSolicitada) {
 		if (cantSolicitada <= limiteUnidadesSegunPresupuesto) {
 			// System.out.println("nroComp: " + nroComprador + " valUnidad: " + valUnidad +
@@ -146,5 +156,6 @@ public class EvaluadorLocal {
 			MontCompradores.agregar(new Comprador(nroComprador, valUnidad, cantSolicitada));
 		}
 	}
+	*/
 
 }
