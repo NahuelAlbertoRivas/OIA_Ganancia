@@ -1,6 +1,6 @@
-package evaluadorlocal;
+package solucion;
 
-class Fabricante implements Comparable<Fabricante> {
+public class Fabricante implements Comparable<Fabricante> {
 	private int id;
 	private int cantidadMinima;
 	private int valorPorUnidad;

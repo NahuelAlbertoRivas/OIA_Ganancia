@@ -2,14 +2,15 @@ package app;
 
 import java.io.IOException;
 
-import evaluadorlocal.EvaluadorLocal;
+import solucion.Solucion;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		EvaluadorLocal el = new EvaluadorLocal();
+		Solucion sol = new Solucion();
 		
-		el.ganancia("ganancia.txt");
+		sol.ganancia("tests/ganancia.txt");
+		
 	}
 
 }

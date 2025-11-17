@@ -1,4 +1,4 @@
-package evaluadorlocal;
+package solucion;
 
 public class Comprador implements Comparable<Comprador> {
 	private int id;
