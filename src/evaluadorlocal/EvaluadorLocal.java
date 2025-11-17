@@ -8,7 +8,7 @@ import java.util.Scanner;
 import monticulo.Monticulo;
 
 public class EvaluadorLocal {
-	private Monticulo<Fabricante> MontFabricantes = new Monticulo<>(); // en primer lugar siempre la mejor opción
+	private Monticulo<Fabricante> montFabricantes = new Monticulo<>(); // en primer lugar siempre la mejor opción
 	private Comprador mejorOpcionComprador = new Comprador(0, 0, 0);
 	private int presupuesto = 0;
 	private int utilidad = -1;
@@ -62,13 +62,13 @@ public class EvaluadorLocal {
 		procesarArchivo(path);
 		//evaluadorLocal();
 
-		Fabricante fab = (Fabricante) MontFabricantes.remover(), aux;
+		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
 		int cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), fab.getCantidadMinima()), utilidadAux;
 
 		utilidad = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad() - cantNecesaria * fab.getValorPorUnidad();
 
-		while (!MontFabricantes.vacio()) {
-			aux = (Fabricante) MontFabricantes.remover();
+		while (!montFabricantes.vacio()) {
+			aux = (Fabricante) montFabricantes.remover();
 			cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), aux.getCantidadMinima());
 			utilidadAux = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
 					- cantNecesaria * aux.getValorPorUnidad();
@@ -87,7 +87,7 @@ public class EvaluadorLocal {
 					+ utilidad);
 		}
 
-		MontFabricantes.vaciarMonticulo();
+		montFabricantes.vaciarMonticulo();
 
 		return utilidad;
 	}
@@ -132,7 +132,7 @@ public class EvaluadorLocal {
 
 	private void insertarMonticuloFabricantes(int nroFabricante, int valUnidad, int cantMin) {
 		if (cantMin * valUnidad <= presupuesto) { // filtramos acorde al presupuesto que disponemos
-			MontFabricantes.agregar(new Fabricante(nroFabricante, valUnidad, cantMin));
+			montFabricantes.agregar(new Fabricante(nroFabricante, valUnidad, cantMin));
 			// System.out.println("nroFab: " + nroFabricante + " valUnidad: " + valUnidad +
 			// " cantMin: " + cantMin);
 			actualizarLimiteUnidadesSegunPresupuesto(valUnidad);
