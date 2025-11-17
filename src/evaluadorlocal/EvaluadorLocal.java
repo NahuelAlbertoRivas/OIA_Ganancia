@@ -37,7 +37,7 @@ public class EvaluadorLocal {
             System.out.print("Fabricante " + (i + 1) + ": "); // Prompt para cada línea
             int precio = sc.nextInt();
             int cant = sc.nextInt();
-            insertarColaPrioridadFabricantes(i + 1, precio, cant);
+            insertarMonticuloFabricantes(i + 1, precio, cant);
         }
 
         // 3. Pedir los datos de los COMPRADORES usando un bucle
@@ -110,7 +110,7 @@ public class EvaluadorLocal {
 			String[] partes = br.readLine().trim().split(" ");
 			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
-			insertarColaPrioridadFabricantes(i + 1, precio, cant);
+			insertarMonticuloFabricantes(i + 1, precio, cant);
 		}
 
 		br.readLine();
@@ -130,7 +130,7 @@ public class EvaluadorLocal {
 		br.close();
 	}
 
-	private void insertarColaPrioridadFabricantes(int nroFabricante, int valUnidad, int cantMin) {
+	private void insertarMonticuloFabricantes(int nroFabricante, int valUnidad, int cantMin) {
 		if (cantMin * valUnidad <= presupuesto) { // filtramos acorde al presupuesto que disponemos
 			MontFabricantes.agregar(new Fabricante(nroFabricante, valUnidad, cantMin));
 			// System.out.println("nroFab: " + nroFabricante + " valUnidad: " + valUnidad +
