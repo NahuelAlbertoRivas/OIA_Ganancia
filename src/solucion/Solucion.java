@@ -8,8 +8,7 @@ import java.util.Scanner;
 import monticulo.Monticulo;
 
 public class Solucion {
-	private Monticulo<Fabricante> montFabricantes = new Monticulo<>(); // en primer lugar siempre la mejor opción
-	// private Monticulo<Comprador> montCompradores = new Monticulo<>();
+	private Monticulo<Fabricante> montFabricantes = new Monticulo<>();
 	private Comprador mejorOpcionComprador = new Comprador(0, 0, 0);
 	private int presupuesto = 0;
 	private int ganancia = -1;
@@ -35,7 +34,7 @@ public class Solucion {
 		// 2. Pedir los datos de los FABRICANTES usando un bucle
 		System.out.println("--- Ingrese las " + F + " condiciones de los fabricantes (Precio CantidadMinima) ---");
 		for (int i = 0; i < F; i++) {
-			System.out.print("Fabricante " + (i + 1) + ": "); // Prompt para cada línea
+			System.out.print("Fabricante " + (i + 1) + ": ");
 			int precio = sc.nextInt();
 			int cant = sc.nextInt();
 			insertarMonticuloFabricantes(i + 1, precio, cant);
@@ -45,7 +44,7 @@ public class Solucion {
 
 		System.out.println("--- Ingrese las " + C + " condiciones de los compradores (Precio Cantidad) ---");
 		for (int i = 0; i < C; i++) {
-			System.out.print("Comprador " + (i + 1) + ": "); // Prompt para cada línea
+			System.out.print("Comprador " + (i + 1) + ": ");
 			int precio = sc.nextInt();
 			int cant = sc.nextInt();
 			if ((cant * precio) > mejorGanancia && cant <= limiteUnidadesSegunPresupuesto) {
@@ -53,7 +52,6 @@ public class Solucion {
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
 			}
-			// insertarColaPrioridadCompradores(i + 1, precio, cant);
 		}
 
 		sc.close();
@@ -78,7 +76,6 @@ public class Solucion {
 	public int solucion() {
 
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
-		// System.out.println(mejorOpcionComprador.toString());
 		if (fab == null) {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 			return -1;
@@ -128,11 +125,11 @@ public class Solucion {
 		// Leer línea de comentario
 		br.readLine();
 
-		for (int i = 0; i < F; i++) {										// O(F)
+		for (int i = 0; i < F; i++) {									
 			String[] partes = br.readLine().trim().split(" "); 
-			precio = Integer.parseInt(partes[0]);				// Total O(FlogF)
+			precio = Integer.parseInt(partes[0]);				
 			cant = Integer.parseInt(partes[1]);
-			insertarMonticuloFabricantes(i + 1, precio, cant);	// O (logF)
+			insertarMonticuloFabricantes(i + 1, precio, cant);
 		}
 
 		br.readLine();
@@ -143,20 +140,17 @@ public class Solucion {
 			cant = Integer.parseInt(partes[1]);
 			if ((cant * precio) > mejorGanancia && cant <= limiteUnidadesSegunPresupuesto) {
 				mejorOpcionComprador.setId(i+1);
-				mejorOpcionComprador.setCantidadSolicitada(cant);	// O(C)
+				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
 			}
-			// insertarColaPrioridadCompradores(i + 1, precio, cant);
 		}
 
 		br.close();
 	}
 
 	private void insertarMonticuloFabricantes(int nroFabricante, int valUnidad, int cantMin) {
-		if (cantMin * valUnidad <= presupuesto) { // filtramos acorde al presupuesto que disponemos
+		if (cantMin * valUnidad <= presupuesto) {
 			montFabricantes.agregar(new Fabricante(nroFabricante, valUnidad, cantMin));
-			// System.out.println("nroFab: " + nroFabricante + " valUnidad: " + valUnidad +
-			// " cantMin: " + cantMin);
 			actualizarLimiteUnidadesSegunPresupuesto(valUnidad);
 		}
 	}
@@ -165,15 +159,7 @@ public class Solucion {
 		int cantMaxUnidadesSegunPresupuesto = presupuesto / valorPorUnidad;
 		if (cantMaxUnidadesSegunPresupuesto > limiteUnidadesSegunPresupuesto) {
 			limiteUnidadesSegunPresupuesto = cantMaxUnidadesSegunPresupuesto;
-			// System.out.println("NUEVO LÍMITE DE UNIDADES -> " +
-			// limiteUnidadesSegunPresupuesto);
 		}
 	}
-
-//	private void insertarColaPrioridadCompradores(int nroComprador, int valUnidad, int cantSolicitada) { 
-//		if (cantSolicitada <= limiteUnidadesSegunPresupuesto) {
-//			montCompradores.agregar(new Comprador(nroComprador, valUnidad, cantSolicitada)); 
-//			} 
-//	}
 	
 }

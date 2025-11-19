@@ -93,5 +93,29 @@ class SolucionTest {
         
         
 	}
+	
+	@Test
+	void testUnSoloFabricanteDescartado() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test8.txt");
+		
+		assertEquals(-1, gananciaObtenida, "Debe resignar el negocio ya que no le puede comprar a ningun fabricante.");
+        
+        
+	}
+	
+	@Test
+	void testMuchosFabricantes() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test9.txt");
+		
+		assertEquals(10, gananciaObtenida, "Debe devolver ganancia 10.");
+        
+        
+	}
 
 }
