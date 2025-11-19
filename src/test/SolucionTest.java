@@ -81,5 +81,17 @@ class SolucionTest {
         
         
 	}
+	
+	@Test
+	void testMejorCompradorDescartado() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test7.txt");
+		
+		assertEquals(180, gananciaObtenida, "Debe devolver ganancia 180, seleccionando el segundo comprador ya que el primero excede la cantidad de unidades que podemos comprar acorde a nuestro presupuesto y las opciones de fabricantes.");
+        
+        
+	}
 
 }

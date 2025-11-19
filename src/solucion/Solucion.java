@@ -12,7 +12,7 @@ public class Solucion {
 	// private Monticulo<Comprador> montCompradores = new Monticulo<>();
 	private Comprador mejorOpcionComprador = new Comprador(0, 0, 0);
 	private int presupuesto = 0;
-	private int utilidad = -1;
+	private int ganancia = -1;
 	private int limiteUnidadesSegunPresupuesto = 0;
 
 	public Solucion() {
@@ -48,8 +48,8 @@ public class Solucion {
 			System.out.print("Comprador " + (i + 1) + ": "); // Prompt para cada línea
 			int precio = sc.nextInt();
 			int cant = sc.nextInt();
-			if ((cant * precio) > mejorGanancia) {
-				mejorOpcionComprador.setId(i);
+			if ((cant * precio) > mejorGanancia && cant <= limiteUnidadesSegunPresupuesto) {
+				mejorOpcionComprador.setId(i+1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
 			}
@@ -78,39 +78,39 @@ public class Solucion {
 	public int solucion() {
 
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
-		System.out.println(mejorOpcionComprador.toString());
+		// System.out.println(mejorOpcionComprador.toString());
 		if (fab == null) {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 			return -1;
 		}
 		int cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), fab.getCantidadMinima()),
-				utilidadAux;
+				gananciaAux;
 
-		utilidad = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
+		ganancia = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
 				- cantNecesaria * fab.getValorPorUnidad();
 
 		while (!montFabricantes.vacio()) {
 			aux = (Fabricante) montFabricantes.remover();
 			cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), aux.getCantidadMinima());
-			utilidadAux = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
+			gananciaAux = mejorOpcionComprador.getCantidadSolicitada() * mejorOpcionComprador.getValorPorUnidad()
 					- cantNecesaria * aux.getValorPorUnidad();
-			if (utilidadAux > utilidad) {
+			if (gananciaAux > ganancia) {
 				fab = aux;
-				utilidad = utilidadAux;
+				ganancia = gananciaAux;
 			}
 		}
 
-		if (utilidad < 0) {
-			utilidad = -1;
+		if (ganancia < 0) {
+			ganancia = -1;
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 		} else {
 			System.out.println("Seleccionando el fabricante (id) " + fab.getId() + " y el comprador (id) "
-					+ mejorOpcionComprador.getId() + ", entonces, la ganancia será -> " + utilidad);
+					+ mejorOpcionComprador.getId() + ", entonces, la ganancia será -> " + ganancia);
 		}
 
 		montFabricantes.vaciarMonticulo();
 
-		return utilidad;
+		return ganancia;
 
 	}
 
@@ -128,11 +128,11 @@ public class Solucion {
 		// Leer línea de comentario
 		br.readLine();
 
-		for (int i = 0; i < F; i++) {
-			String[] partes = br.readLine().trim().split(" ");
-			precio = Integer.parseInt(partes[0]);
+		for (int i = 0; i < F; i++) {										// O(F)
+			String[] partes = br.readLine().trim().split(" "); 
+			precio = Integer.parseInt(partes[0]);				// Total O(FlogF)
 			cant = Integer.parseInt(partes[1]);
-			insertarMonticuloFabricantes(i + 1, precio, cant);
+			insertarMonticuloFabricantes(i + 1, precio, cant);	// O (logF)
 		}
 
 		br.readLine();
@@ -141,9 +141,9 @@ public class Solucion {
 			String[] partes = br.readLine().trim().split(" ");
 			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
-			if ((cant * precio) > mejorGanancia) {
-				mejorOpcionComprador.setId(i);
-				mejorOpcionComprador.setCantidadSolicitada(cant);
+			if ((cant * precio) > mejorGanancia && cant <= limiteUnidadesSegunPresupuesto) {
+				mejorOpcionComprador.setId(i+1);
+				mejorOpcionComprador.setCantidadSolicitada(cant);	// O(C)
 				mejorOpcionComprador.setValorPorUnidad(precio);
 			}
 			// insertarColaPrioridadCompradores(i + 1, precio, cant);
