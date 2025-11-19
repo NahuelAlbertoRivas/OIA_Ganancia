@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Solucion sol = new Solucion();
 		
-		sol.ganancia("tests/test1.txt");
+		sol.ganancia("tests/testMuchosFabricantes.txt");
 		
 	}
 

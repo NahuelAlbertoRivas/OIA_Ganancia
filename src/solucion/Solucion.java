@@ -9,6 +9,7 @@ import monticulo.Monticulo;
 
 public class Solucion {
 	private Monticulo<Fabricante> montFabricantes = new Monticulo<>(); // en primer lugar siempre la mejor opción
+	// private Monticulo<Comprador> montCompradores = new Monticulo<>();
 	private Comprador mejorOpcionComprador = new Comprador(0, 0, 0);
 	private int presupuesto = 0;
 	private int utilidad = -1;
@@ -59,26 +60,29 @@ public class Solucion {
 	}
 
 	public int ganancia(String path) throws IOException {
-		
+
 		procesarArchivo(path);
-		
+
 		return solucion();
-		
-		
+
 	}
-	
+
 	public int ganancia() throws IOException {
-		
+
 		evaluadorLocal();
-		
+
 		return solucion();
-		
-		
+
 	}
-	
+
 	public int solucion() {
-		
+
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
+		System.out.println(mejorOpcionComprador.toString());
+		if (fab == null) {
+			System.out.println("Es recomendable resignar el negocio de esta jornada");
+			return -1;
+		}
 		int cantNecesaria = Math.max(mejorOpcionComprador.getCantidadSolicitada(), fab.getCantidadMinima()),
 				utilidadAux;
 
@@ -107,7 +111,7 @@ public class Solucion {
 		montFabricantes.vaciarMonticulo();
 
 		return utilidad;
-		
+
 	}
 
 	public void procesarArchivo(String path) throws IOException {
@@ -166,13 +170,10 @@ public class Solucion {
 		}
 	}
 
-	/*
-	 * private void insertarColaPrioridadCompradores(int nroComprador, int
-	 * valUnidad, int cantSolicitada) { if (cantSolicitada <=
-	 * limiteUnidadesSegunPresupuesto) { // System.out.println("nroComp: " +
-	 * nroComprador + " valUnidad: " + valUnidad + // " cantSolicitada: " +
-	 * cantSolicitada); MontCompradores.agregar(new Comprador(nroComprador,
-	 * valUnidad, cantSolicitada)); } }
-	 */
-
+//	private void insertarColaPrioridadCompradores(int nroComprador, int valUnidad, int cantSolicitada) { 
+//		if (cantSolicitada <= limiteUnidadesSegunPresupuesto) {
+//			montCompradores.agregar(new Comprador(nroComprador, valUnidad, cantSolicitada)); 
+//			} 
+//	}
+	
 }
