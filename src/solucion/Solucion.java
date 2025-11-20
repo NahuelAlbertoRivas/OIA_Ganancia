@@ -23,6 +23,7 @@ public class Solucion {
 		Scanner sc = new Scanner(System.in);
 
 		// 1. Pedir los valores iniciales
+
 		System.out.println("Ingrese Presupuesto, Nro Fabricantes y Nro Compradores (ej: 1000 4 4)");
 
 		int P = sc.nextInt();
@@ -32,6 +33,7 @@ public class Solucion {
 		presupuesto = P;
 
 		// 2. Pedir los datos de los FABRICANTES usando un bucle
+
 		System.out.println("--- Ingrese las " + F + " condiciones de los fabricantes (Precio CantidadMinima) ---");
 		for (int i = 0; i < F; i++) {
 			System.out.print("Fabricante " + (i + 1) + ": ");
@@ -45,21 +47,22 @@ public class Solucion {
 		System.out.print("Comprador 1: ");
 		precio = sc.nextInt();
 		cant = sc.nextInt();
-		if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
+		if (cant <= limiteUnidadesSegunPresupuesto && ((cant * precio > mejorGanancia)
+				|| (cant * precio == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada()))) {
 			mejorOpcionComprador.setId(1);
 			mejorOpcionComprador.setCantidadSolicitada(cant);
 			mejorOpcionComprador.setValorPorUnidad(precio);
 			mejorGanancia = cant * precio;
 		}
-		
-		
+
 		System.out.println("--- Ingrese las " + C + " condiciones de los compradores (Precio Cantidad) ---");
 		for (int i = 1; i < C; i++) {
 			System.out.print("Comprador " + (i + 1) + ": ");
 			precio = sc.nextInt();
 			cant = sc.nextInt();
-			if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
-				mejorOpcionComprador.setId(i+1);
+			if (cant <= limiteUnidadesSegunPresupuesto && ((cant * precio > mejorGanancia)
+					|| (cant * precio == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada()))) {
+				mejorOpcionComprador.setId(i + 1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
 				mejorGanancia = cant * precio;
@@ -86,11 +89,14 @@ public class Solucion {
 	}
 
 	public int solucion() {
-		if(montFabricantes.vacio() == true)
-		{
+
+		if (montFabricantes.vacio() == true) {
+			System.out.println("Es recomendable resignar el negocio de esta jornada");
 			return -1;
 		}
+
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
+
 		if (fab == null && mejorOpcionComprador.getId() == 0) {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 			return -1;
@@ -140,19 +146,20 @@ public class Solucion {
 		// Leer línea de comentario
 		br.readLine();
 
-		for (int i = 0; i < F; i++) {									
-			String[] partes = br.readLine().trim().split(" "); 
-			precio = Integer.parseInt(partes[0]);				
+		for (int i = 0; i < F; i++) {
+			String[] partes = br.readLine().trim().split(" ");
+			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
 			insertarMonticuloFabricantes(i + 1, precio, cant);
 		}
 
 		br.readLine();
-		
+
 		String[] parts = br.readLine().trim().split(" ");
 		precio = Integer.parseInt(parts[0]);
 		cant = Integer.parseInt(parts[1]);
-		if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
+		if (cant <= limiteUnidadesSegunPresupuesto && ((cant * precio > mejorGanancia)
+				|| (cant * precio == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada()))) {
 			mejorOpcionComprador.setId(1);
 			mejorOpcionComprador.setCantidadSolicitada(cant);
 			mejorOpcionComprador.setValorPorUnidad(precio);
@@ -163,8 +170,9 @@ public class Solucion {
 			String[] partes = br.readLine().trim().split(" ");
 			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
-			if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
-				mejorOpcionComprador.setId(i+1);
+			if (cant <= limiteUnidadesSegunPresupuesto && ((cant * precio > mejorGanancia)
+					|| (cant * precio == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada()))) {
+				mejorOpcionComprador.setId(i + 1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
 				mejorGanancia = cant * precio;
@@ -187,5 +195,5 @@ public class Solucion {
 			limiteUnidadesSegunPresupuesto = cantMaxUnidadesSegunPresupuesto;
 		}
 	}
-	
+
 }
