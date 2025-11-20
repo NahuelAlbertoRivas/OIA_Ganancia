@@ -76,7 +76,7 @@ public class Solucion {
 	public int solucion() {
 
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
-		if (fab == null) {
+		if (fab == null && mejorOpcionComprador.getId() == 0) {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
 			return -1;
 		}
