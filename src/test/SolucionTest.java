@@ -103,7 +103,6 @@ class SolucionTest {
 		
 		assertEquals(-1, gananciaObtenida, "Debe resignar el negocio ya que no le puede comprar a ningun fabricante.");
         
-        
 	}
 	
 	@Test
@@ -115,6 +114,38 @@ class SolucionTest {
 		
 		assertEquals(10, gananciaObtenida, "Debe devolver ganancia 10.");
         
+	}
+	
+	@Test
+	void mismoPotencialRendimientoDistintaGanancia1() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test10.txt");
+		
+		assertEquals(1800, gananciaObtenida, "Debe devolver ganancia 1800.");
+        
+	}
+	
+	@Test
+	void mismoPotencialRendimientoDistintaGanancia2() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test11.txt");
+		
+		assertEquals(1484, gananciaObtenida, "Debe devolver ganancia 1484.");
+        
+	}
+	
+	@Test
+	void mismoPotencialRendimientoDistintaGanancia3() throws IOException {
+		
+		Solucion sol = new Solucion();
+		
+		int gananciaObtenida= sol.ganancia("tests/test12.txt");
+		
+		assertEquals(1484, gananciaObtenida, "Debe devolver ganancia 1484.");
         
 	}
 

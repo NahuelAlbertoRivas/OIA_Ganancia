@@ -45,16 +45,20 @@ public class Solucion {
 		System.out.print("Comprador 1: ");
 		precio = sc.nextInt();
 		cant = sc.nextInt();
-		mejorOpcionComprador.setId(1);
-		mejorOpcionComprador.setCantidadSolicitada(cant);
-		mejorOpcionComprador.setValorPorUnidad(precio);
+		if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
+			mejorOpcionComprador.setId(1);
+			mejorOpcionComprador.setCantidadSolicitada(cant);
+			mejorOpcionComprador.setValorPorUnidad(precio);
+			mejorGanancia = cant * precio;
+		}
+		
 		
 		System.out.println("--- Ingrese las " + C + " condiciones de los compradores (Precio Cantidad) ---");
 		for (int i = 1; i < C; i++) {
 			System.out.print("Comprador " + (i + 1) + ": ");
 			precio = sc.nextInt();
 			cant = sc.nextInt();
-			if ((cant * precio) > mejorGanancia && cant <= limiteUnidadesSegunPresupuesto && cant < mejorOpcionComprador.getCantidadSolicitada()) {
+			if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
 				mejorOpcionComprador.setId(i+1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
@@ -82,7 +86,10 @@ public class Solucion {
 	}
 
 	public int solucion() {
-
+		if(montFabricantes.vacio() == true)
+		{
+			return -1;
+		}
 		Fabricante fab = (Fabricante) montFabricantes.remover(), aux;
 		if (fab == null && mejorOpcionComprador.getId() == 0) {
 			System.out.println("Es recomendable resignar el negocio de esta jornada");
@@ -145,15 +152,18 @@ public class Solucion {
 		String[] parts = br.readLine().trim().split(" ");
 		precio = Integer.parseInt(parts[0]);
 		cant = Integer.parseInt(parts[1]);
-		mejorOpcionComprador.setId(1);
-		mejorOpcionComprador.setCantidadSolicitada(cant);
-		mejorOpcionComprador.setValorPorUnidad(precio);
+		if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
+			mejorOpcionComprador.setId(1);
+			mejorOpcionComprador.setCantidadSolicitada(cant);
+			mejorOpcionComprador.setValorPorUnidad(precio);
+			mejorGanancia = cant * precio;
+		}
 
 		for (int i = 1; i < C; i++) {
 			String[] partes = br.readLine().trim().split(" ");
 			precio = Integer.parseInt(partes[0]);
 			cant = Integer.parseInt(partes[1]);
-			if ((cant * precio) >= mejorGanancia && cant <= limiteUnidadesSegunPresupuesto && cant < mejorOpcionComprador.getCantidadSolicitada()) {
+			if (((cant * precio) > mejorGanancia || ((cant * precio) == mejorGanancia && cant < mejorOpcionComprador.getCantidadSolicitada())) && cant <= limiteUnidadesSegunPresupuesto) {
 				mejorOpcionComprador.setId(i+1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
