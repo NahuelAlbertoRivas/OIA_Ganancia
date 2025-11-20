@@ -2,7 +2,7 @@
 #Condiciones de los fabricantes# 
 4 130
 4 129
-5 200
+1 200
 #Condiciones de los compradores# 
 20 100
 10 200
