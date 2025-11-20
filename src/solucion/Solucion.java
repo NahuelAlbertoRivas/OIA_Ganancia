@@ -47,7 +47,7 @@ public class Solucion {
 			System.out.print("Comprador " + (i + 1) + ": ");
 			int precio = sc.nextInt();
 			int cant = sc.nextInt();
-			if ((cant * precio) >= mejorGanancia && (cant <= limiteUnidadesSegunPresupuesto)) {
+			if ((cant * precio) > mejorGanancia && (cant <= limiteUnidadesSegunPresupuesto)) {
 				mejorOpcionComprador.setId(i+1);
 				mejorOpcionComprador.setCantidadSolicitada(cant);
 				mejorOpcionComprador.setValorPorUnidad(precio);
